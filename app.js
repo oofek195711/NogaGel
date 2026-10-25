@@ -1,6 +1,5 @@
-import { firebaseConfig, allowedEmails } from './assets/firebase-config.js';
-
-const VERSION = '1.2.0';
+const VERSION = '1.2.1';
+let firebaseConfig = null, allowedEmails = null;
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 
 /* ---------- קבועים ---------- */
@@ -133,8 +132,26 @@ async function migrateLocal(b) {
   } catch (e) { console.error(e); toast('שגיאה בהעברה, אפשר לנסות שוב בכניסה הבאה'); }
 }
 
+function showFatal(msg) {
+  $('#app').classList.add('hidden');
+  $('#login').classList.remove('hidden');
+  $('#googleBtn')?.classList.add('hidden');
+  $('#loginErr').textContent = msg;
+}
+
 async function boot() {
   $('#version').textContent = 'v' + VERSION;
+  $('#login').classList.remove('hidden');
+  $('#loginErr').textContent = 'טוען... 💅';
+  $('#googleBtn').disabled = true;
+  try {
+    const cfg = await import('./assets/firebase-config.js?v=' + VERSION);
+    firebaseConfig = cfg.firebaseConfig; allowedEmails = cfg.allowedEmails;
+  } catch (e) { console.error(e); }
+  if (firebaseConfig?.apiKey && !Array.isArray(allowedEmails)) {
+    showFatal('הקובץ assets/firebase-config.js ב-GitHub לא מעודכן (חסרה רשימת המיילים)');
+    return;
+  }
   if (!firebaseConfig || !firebaseConfig.apiKey) { start(localBackend()); return; }
 
   const [{ initializeApp }, A, fs] = await Promise.all([
@@ -148,6 +165,8 @@ async function boot() {
 
   A.onAuthStateChanged(auth, (user) => {
     if (unsub) { unsub(); unsub = null; }
+    $('#googleBtn').disabled = false;
+    if ($('#loginErr').textContent.startsWith('טוען')) $('#loginErr').textContent = '';
     if (!user) {
       $('#app').classList.add('hidden');
       $('#login').classList.remove('hidden');
@@ -624,4 +643,4 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && state.form && e.target.tagName === 'INPUT') { e.preventDefault(); saveForm(); }
 });
 
-boot().catch((e) => { console.error(e); toast('בעיה בחיבור, עובדים במצב מקומי'); start(localBackend()); });
+boot().catch((e) => { console.error(e); showFatal('בעיה בטעינה: ' + (e?.code || e?.message || e)); });
