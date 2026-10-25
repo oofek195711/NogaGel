@@ -1,6 +1,6 @@
-import { firebaseConfig } from './assets/firebase-config.js';
+import { firebaseConfig, allowedEmails } from './assets/firebase-config.js';
 
-const VERSION = '1.1.0';
+const VERSION = '1.2.0';
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 
 /* ---------- קבועים ---------- */
@@ -87,8 +87,9 @@ function localBackend() {
 
 /* ---------- אחסון: Firebase ---------- */
 function firebaseBackend(user, fs, db) {
-  const col = fs.collection(db, 'users', user.uid, 'tx');
-  const sref = fs.doc(db, 'users', user.uid, 'meta', 'settings');
+  // נתונים משותפים לכל המיילים המורשים
+  const col = fs.collection(db, 'shared', 'main', 'tx');
+  const sref = fs.doc(db, 'shared', 'main', 'meta', 'settings');
   return {
     mode: 'cloud',
     subscribe(f) {
@@ -150,6 +151,12 @@ async function boot() {
     if (!user) {
       $('#app').classList.add('hidden');
       $('#login').classList.remove('hidden');
+      return;
+    }
+    const allowed = (allowedEmails || []).map((e) => e.toLowerCase());
+    if (!allowed.includes((user.email || '').toLowerCase())) {
+      const email = user.email;
+      A.signOut(auth).then(() => { $('#loginErr').textContent = `לחשבון ${email} אין גישה לאפליקציה`; });
       return;
     }
     start(firebaseBackend(user, fs, db));
