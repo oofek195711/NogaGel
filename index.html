@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NogaGel · הכסף של נגה</title>
+<meta name="theme-color" content="#f0508f">
+<link rel="manifest" href="assets/manifest.json">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NogaGel">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- רקע: בקבוקי לק, טיפות ונצנצים -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bottle" viewBox="0 0 60 100">
+      <rect x="20" y="0" width="20" height="34" rx="5" fill="currentColor" opacity=".55"/>
+      <rect x="17" y="30" width="26" height="10" rx="3" fill="currentColor" opacity=".7"/>
+      <rect x="6" y="38" width="48" height="60" rx="14" fill="currentColor"/>
+      <rect x="13" y="46" width="7" height="34" rx="3.5" fill="#fff" opacity=".45"/>
+    </symbol>
+    <symbol id="drop" viewBox="0 0 40 56">
+      <path d="M20 2 C20 2 3 24 3 36 a17 17 0 0 0 34 0 C37 24 20 2 20 2Z" fill="currentColor"/>
+      <ellipse cx="13" cy="36" rx="4" ry="7" fill="#fff" opacity=".45"/>
+    </symbol>
+    <symbol id="spark" viewBox="0 0 40 40">
+      <path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="nail" viewBox="0 0 50 70">
+      <path d="M8 30 C8 10 42 10 42 30 L42 66 L8 66Z" fill="currentColor"/>
+      <path d="M14 28 C14 16 22 14 25 14" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".5"/>
+    </symbol>
+  </defs>
+</svg>
+<div class="bg" aria-hidden="true">
+  <svg class="d b1"><use href="#bottle"/></svg>
+  <svg class="d b2"><use href="#bottle"/></svg>
+  <svg class="d b3"><use href="#bottle"/></svg>
+  <svg class="d p1"><use href="#drop"/></svg>
+  <svg class="d p2"><use href="#drop"/></svg>
+  <svg class="d p3"><use href="#drop"/></svg>
+  <svg class="d n1"><use href="#nail"/></svg>
+  <svg class="d n2"><use href="#nail"/></svg>
+  <svg class="d s1"><use href="#spark"/></svg>
+  <svg class="d s2"><use href="#spark"/></svg>
+  <svg class="d s3"><use href="#spark"/></svg>
+  <svg class="d s4"><use href="#spark"/></svg>
+  <svg class="d s5"><use href="#spark"/></svg>
+</div>
+
+<!-- מסך כניסה -->
+<div id="login" class="login hidden">
+  <form id="loginForm" class="card login-card">
+    <div class="logo-big"><svg><use href="#bottle"/></svg></div>
+    <h1>NogaGel</h1>
+    <p class="muted">הכסף של נגה, מסודר ויפה 💅</p>
+    <input id="email" type="email" placeholder="מייל" autocomplete="username" required>
+    <input id="pass" type="password" placeholder="סיסמה" autocomplete="current-password" required>
+    <button class="btn primary" type="submit">כניסה</button>
+    <button class="link" type="button" id="forgot">שכחתי סיסמה</button>
+    <p id="loginErr" class="err"></p>
+  </form>
+</div>
+
+<div id="app" class="app hidden">
+  <header class="top">
+    <div class="brand"><svg><use href="#bottle"/></svg><span>NogaGel</span></div>
+    <span id="modeBadge" class="badge"></span>
+  </header>
+  <main id="view"></main>
+  <footer class="foot">💗 NogaGel · <span id="version"></span></footer>
+
+  <button class="fab" data-act="add" aria-label="הוספת תנועה">+</button>
+
+  <nav class="tabs">
+    <button data-tab="month" class="on"><span>📅</span>חודש</button>
+    <button data-tab="year"><span>📊</span>שנה</button>
+    <button data-tab="settings"><span>⚙️</span>הגדרות</button>
+  </nav>
+</div>
+
+<div id="modal" class="modal">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
