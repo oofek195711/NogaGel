@@ -12,7 +12,7 @@ body{
   background-attachment:fixed;min-height:100vh;
 }
 .hidden{display:none!important}
-button{font-family:inherit;cursor:pointer}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink)}
 
 /* ---------- רקע ---------- */
@@ -153,8 +153,9 @@ table.ytab{width:100%;border-collapse:collapse;font-size:14px}
 /* מודאל */
 .modal{position:fixed;inset:0;background:#56123666;z-index:20;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal.open{opacity:1;pointer-events:auto}
-.sheet{background:#fffafc;width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom));transform:translateY(30px);transition:transform .25s}
+.sheet{background:#fffafc;width:100%;max-width:560px;max-height:85vh;max-height:calc(100dvh - 24px - env(safe-area-inset-top));-webkit-overflow-scrolling:touch;overscroll-behavior:contain;overflow:auto;border-radius:26px 26px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom));transform:translateY(30px);transition:transform .25s}
 .modal.open .sheet{transform:none}
+.sheet .seg{position:relative;z-index:2}
 .sheet h2{margin:0 0 12px;font-size:19px;display:flex;justify-content:space-between;align-items:center}
 .x{border:0;background:var(--p100);width:34px;height:34px;border-radius:50%;color:var(--p700);font-size:18px}
 

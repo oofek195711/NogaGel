@@ -1,6 +1,6 @@
 import { firebaseConfig } from './assets/firebase-config.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 
 /* ---------- קבועים ---------- */
@@ -433,7 +433,6 @@ function openForm(tx, preset = {}) {
     : { type: 'income', amount: '', date: defaultDate(), cat: INCOME_CATS[0], method: ls.get('nogagel-lastMethod', 'cash'), client: '', note: '', ...preset };
   drawForm();
   $('#modal').classList.add('open');
-  if (!tx && !preset.amount) setTimeout(() => $('#fAmount')?.focus(), 250);
 }
 function closeForm() { $('#modal').classList.remove('open'); state.form = null; state.editing = null; }
 
@@ -444,15 +443,15 @@ function drawForm() {
   $('#sheet').innerHTML = `
     <h2>${state.editing ? 'עריכת תנועה' : 'תנועה חדשה'} <button class="x" data-act="close" aria-label="סגירה">✕</button></h2>
     <div class="seg">
-      <button class="inc ${inc ? 'on' : ''}" data-set="type" data-v="income">💗 הכנסה</button>
-      <button class="exp ${!inc ? 'on' : ''}" data-set="type" data-v="expense">🛒 הוצאה</button>
+      <button type="button" class="inc ${inc ? 'on' : ''}" data-set="type" data-v="income">💗 הכנסה</button>
+      <button type="button" class="exp ${!inc ? 'on' : ''}" data-set="type" data-v="expense">🛒 הוצאה</button>
     </div>
     <div class="field"><label>סכום (₪)</label>
       <input id="fAmount" class="amount-in" type="number" inputmode="decimal" min="0" step="any" value="${esc(f.amount)}" data-in="amount" placeholder="0"></div>
     <div class="field"><label>${inc ? 'איך שילמו' : 'איך שילמתי'}</label>
-      <div class="chips">${METHODS.map((m) => `<button class="chip ${f.method === m.id ? 'on' : ''}" data-set="method" data-v="${m.id}">${m.icon} ${m.label}</button>`).join('')}</div></div>
+      <div class="chips">${METHODS.map((m) => `<button type="button" class="chip ${f.method === m.id ? 'on' : ''}" data-set="method" data-v="${m.id}">${m.icon} ${m.label}</button>`).join('')}</div></div>
     <div class="field"><label>קטגוריה</label>
-      <div class="chips">${cats.map((c) => `<button class="chip ${f.cat === c ? 'on' : ''}" data-set="cat" data-v="${esc(c)}">${CAT_ICON[c] || ''} ${esc(c)}</button>`).join('')}</div></div>
+      <div class="chips">${cats.map((c) => `<button type="button" class="chip ${f.cat === c ? 'on' : ''}" data-set="cat" data-v="${esc(c)}">${CAT_ICON[c] || ''} ${esc(c)}</button>`).join('')}</div></div>
     <div class="field"><label>תאריך</label><input type="date" value="${esc(f.date)}" data-in="date"></div>
     ${inc ? `<div class="field"><label>שם הלקוחה (לא חובה)</label><input value="${esc(f.client)}" data-in="client" list="clientList" placeholder="למשל: מאיה">
       <datalist id="clientList">${clientNames().map((c) => `<option value="${esc(c)}">`).join('')}</datalist></div>` : ''}
@@ -509,6 +508,7 @@ document.addEventListener('click', async (e) => {
 
   const set = e.target.closest('[data-set]');
   if (set && state.form) {
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     const k = set.dataset.set, v = set.dataset.v;
     if (k === 'type' && state.form.type !== v) state.form.cat = (v === 'income' ? INCOME_CATS : EXPENSE_CATS)[0];
     state.form[k] = v;
