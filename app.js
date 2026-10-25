@@ -1,6 +1,6 @@
 import { firebaseConfig } from './assets/firebase-config.js';
 
-const VERSION = '1.0.1';
+const VERSION = '1.1.0';
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 
 /* ---------- קבועים ---------- */
@@ -116,6 +116,20 @@ async function start(b) {
   if (unsub) unsub();
   unsub = b.subscribe((txs) => { state.txs = txs; render(); });
   render();
+  if (b.mode === 'cloud') migrateLocal(b);
+}
+
+async function migrateLocal(b) {
+  const local = ls.get('nogagel-tx', []);
+  if (!local.length || ls.get('nogagel-migrated', false)) return;
+  if (!confirm(`נמצאו ${local.length} תנועות ששמורות בטלפון הזה. להעביר אותן לחשבון? 💗`)) return;
+  try {
+    for (const t of local) { const { id, ...rest } = t; await b.add(rest); }
+    const ls_settings = ls.get('nogagel-settings', null);
+    if (ls_settings) { state.settings = { ...state.settings, ...ls_settings }; await b.saveSettings(state.settings); }
+    ls.set('nogagel-migrated', true);
+    toast(`הועברו ${local.length} תנועות ✨`);
+  } catch (e) { console.error(e); toast('שגיאה בהעברה, אפשר לנסות שוב בכניסה הבאה'); }
 }
 
 async function boot() {
@@ -141,17 +155,29 @@ async function boot() {
     start(firebaseBackend(user, fs, db));
   });
 
-  $('#loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const provider = new A.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  const errMsg = (e) => {
+    if (['auth/popup-closed-by-user', 'auth/cancelled-popup-request'].includes(e?.code)) return '';
+    if (e?.code === 'auth/unauthorized-domain') return 'הדומיין לא מאושר ב-Firebase (Authorized domains)';
+    return 'הכניסה לא הצליחה, לנסות שוב';
+  };
+  // אם חזרנו מכניסה בהפניה (redirect)
+  A.getRedirectResult(auth).catch((e) => { $('#loginErr').textContent = errMsg(e); });
+
+  $('#googleBtn').addEventListener('click', async () => {
+    const btn = $('#googleBtn');
     $('#loginErr').textContent = '';
-    try { await A.signInWithEmailAndPassword(auth, $('#email').value.trim(), $('#pass').value); }
-    catch { $('#loginErr').textContent = 'מייל או סיסמה לא נכונים'; }
-  });
-  $('#forgot').addEventListener('click', async () => {
-    const email = $('#email').value.trim();
-    if (!email) { $('#loginErr').textContent = 'קודם לכתוב את המייל למעלה'; return; }
-    try { await A.sendPasswordResetEmail(auth, email); toast('נשלח מייל לאיפוס סיסמה 💌'); }
-    catch { $('#loginErr').textContent = 'לא הצלחתי לשלוח מייל'; }
+    btn.disabled = true;
+    try {
+      await A.signInWithPopup(auth, provider);
+    } catch (e) {
+      // באייפון / אפליקציה ממסך הבית חלון קופץ לפעמים נחסם - עוברים להפניה
+      if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment', 'auth/web-storage-unsupported'].includes(e.code)) {
+        try { await A.signInWithRedirect(auth, provider); return; } catch (e2) { e = e2; }
+      }
+      $('#loginErr').textContent = errMsg(e);
+    } finally { btn.disabled = false; }
   });
   window.__logout = () => A.signOut(auth);
 }

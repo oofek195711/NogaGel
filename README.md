@@ -1,6 +1,6 @@
 # NogaGel · הכסף של נגה 💅
 
-אפליקציה לניהול הכנסות והוצאות של עסק לק ג'ל. גרסה 1.0.0.
+אפליקציה לניהול הכנסות והוצאות של עסק לק ג'ל. גרסה 1.1.0.
 
 ## מבנה הקבצים
 - `index.html`, `style.css`, `app.js` – הקבצים שמשתנים בעדכונים
@@ -12,10 +12,9 @@
 
 ## חיבור ל-Firebase (מומלץ: גיבוי בענן + כניסה מכמה מכשירים)
 1. ב-[Firebase Console](https://console.firebase.google.com) ליצור פרויקט חדש (למשל `nogagel`).
-2. **Authentication → Sign-in method** → להפעיל **Email/Password**.
-3. **Authentication → Users → Add user** → ליצור משתמש עם המייל והסיסמה של נגה.
-4. **Firestore Database → Create database** (production mode).
-5. **Firestore → Rules** → להדביק ולפרסם:
+2. **Authentication → Sign-in method** → להפעיל **Google** (לבחור support email ולשמור).
+3. **Firestore Database → Create database** (production mode).
+4. **Firestore → Rules** → להדביק ולפרסם:
    ```
    rules_version = '2';
    service cloud.firestore {
@@ -26,10 +25,10 @@
      }
    }
    ```
-6. **Project settings → Your apps → Web (</>)** → להעתיק את ה-config ולהדביק ב-`assets/firebase-config.js`.
-7. **Authentication → Settings → Authorized domains** → להוסיף את `<username>.github.io`.
+5. **Project settings → Your apps → Web (</>)** → להעתיק את ה-config ולהדביק ב-`assets/firebase-config.js`.
+6. **Authentication → Settings → Authorized domains** → להוסיף את `<username>.github.io`.
 
-> אם נגה כבר הכניסה נתונים במצב מקומי: לפני החיבור – הגדרות → גיבוי. אחרי הכניסה – הגדרות → שחזור מגיבוי.
+> אם נגה כבר הכניסה נתונים במצב מקומי: לפני החיבור – הגדרות → גיבוי. בכניסה הראשונה עם Google האפליקציה תציע להעביר את הנתונים מהטלפון לחשבון אוטומטית.
 
 ## הוספה למסך הבית
 אייפון: Safari → שיתוף → "הוסף למסך הבית". אנדרואיד: Chrome → ⋮ → "הוספה למסך הבית".

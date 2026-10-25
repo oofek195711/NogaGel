@@ -184,3 +184,7 @@ table.ytab{width:100%;border-collapse:collapse;font-size:14px}
 
 .toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-80px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;z-index:30;transition:transform .3s;white-space:nowrap}
 .toast.show{transform:translate(-50%,0)}
+
+.btn.google{background:#fff;color:#3c4043;border:2px solid var(--p200);display:flex;align-items:center;justify-content:center;gap:10px;font-weight:500;padding:14px}
+.btn.google:active{background:var(--p50)}
+.btn.google:disabled{opacity:.6}
