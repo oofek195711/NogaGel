@@ -1,7 +1,7 @@
 :root{
   --p50:#fff3f8; --p100:#ffe3ef; --p200:#ffc6dd; --p300:#ff9cc6; --p400:#fa74ab;
   --p500:#f0508f; --p600:#d93a7a; --p700:#b8236a; --ink:#561236; --muted:#9a5d7c;
-  --card:#ffffffe8; --green:#2fa77a; --red:#e2456b; --gold:#e8a93b;
+  --card:#ffffffe8; --green:#2fa77a; --red:#e2456b; --gold:#e8a93b; --teal:#169c94; --teal-light:#7fd8cf; --teal-bg:#dcf5f2;
   --r:20px; --shadow:0 6px 22px #d93a7a22;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -84,10 +84,10 @@ input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink)}
 /* פסים */
 .bar-row{display:grid;grid-template-columns:96px 1fr 70px;align-items:center;gap:8px;margin:8px 0;font-size:14px}
 .bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bar{height:12px;background:var(--p100);border-radius:99px;overflow:hidden}
+.bar{height:12px;background:#f6edf2;border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;border-radius:99px}
-.bar i.inc{background:linear-gradient(90deg,var(--p400),var(--p600))}
-.bar i.exp{background:linear-gradient(90deg,#f7a3b8,var(--red))}
+.bar i.inc{background:linear-gradient(90deg,var(--teal-light),var(--teal))}
+.bar i.exp{background:linear-gradient(90deg,var(--p300),var(--p600))}
 .bar i.met{background:linear-gradient(90deg,#d9a1e6,#a855c7)}
 .bar-val{text-align:left;font-weight:700;font-size:13px}
 
@@ -95,8 +95,8 @@ input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink)}
 .day{font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:500}
 .tx{display:flex;align-items:center;gap:10px;padding:10px;background:#fff;border-radius:14px;margin-bottom:6px;border:0;width:100%;text-align:right;color:var(--ink)}
 .tx .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:0 0 auto}
-.tx .ic.inc{background:var(--p100)}
-.tx .ic.exp{background:#ffe6ea}
+.tx .ic.inc{background:var(--teal-bg)}
+.tx .ic.exp{background:var(--p100)}
 .tx .mid{flex:1;min-width:0}
 .tx .mid b{display:block;font-size:15px;font-weight:500}
 .tx .mid span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
@@ -112,8 +112,8 @@ input,select,textarea{font-family:inherit;font-size:16px;color:var(--ink)}
 .ycol{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;border:0;background:none;padding:0}
 .ycol .pair{display:flex;gap:2px;align-items:flex-end;height:100%;width:100%;justify-content:center}
 .ycol .pair i{width:42%;border-radius:5px 5px 2px 2px;min-height:2px}
-.ycol .pair i.inc{background:linear-gradient(0deg,var(--p400),var(--p600))}
-.ycol .pair i.exp{background:linear-gradient(0deg,#f7a3b8,var(--red))}
+.ycol .pair i.inc{background:linear-gradient(0deg,var(--teal-light),var(--teal))}
+.ycol .pair i.exp{background:linear-gradient(0deg,var(--p300),var(--p600))}
 .ycol small{font-size:10px;color:var(--muted);margin-top:4px}
 .ycol.cur small{color:var(--p700);font-weight:800}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}

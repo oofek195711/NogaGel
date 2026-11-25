@@ -1,4 +1,4 @@
-const VERSION = '1.2.1';
+const VERSION = '1.2.3';
 let firebaseConfig = null, allowedEmails = null;
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 
@@ -412,7 +412,7 @@ function yearView() {
     <div class="card">
       <h3>📊 חודש אחרי חודש</h3>
       <div class="ychart">${chart}</div>
-      <div class="legend"><span><i style="background:var(--p500)"></i>הכנסות</span><span><i style="background:var(--red)"></i>הוצאות</span><span>לחיצה על חודש פותחת אותו</span></div>
+      <div class="legend"><span><i style="background:var(--teal)"></i>הכנסות</span><span><i style="background:var(--p500)"></i>הוצאות</span><span>לחיצה על חודש פותחת אותו</span></div>
     </div>
 
     ${table ? `
